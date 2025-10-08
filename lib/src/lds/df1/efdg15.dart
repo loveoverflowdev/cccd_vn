@@ -3,7 +3,7 @@
 
 import 'dart:typed_data';
 import 'dg.dart';
-import 'package:dmrtd/dmrtd.dart';
+import 'package:cccd_vietnam/dmrtd.dart';
 
 class EfDG15 extends DataGroup {
   static const FID = 0x010F;
@@ -28,7 +28,7 @@ class EfDG15 extends DataGroup {
   void parseContent(final Uint8List content) {
     try {
       _pubkey = AAPublicKey.fromBytes(content);
-    } on Exception catch(e) {
+    } on Exception catch (e) {
       throw EfParseError("Failed to parse AAPublicKey from EF.DG15: $e");
     }
   }

@@ -4,7 +4,7 @@
 import 'dart:core';
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:dmrtd/extensions.dart';
+import 'package:cccd_vietnam/extensions.dart';
 
 import 'dg.dart';
 import '../ef.dart';
@@ -41,7 +41,6 @@ class EfDG12 extends DataGroup {
 
   DateTime? get dateOfIssue => _dateOfIssue;
   String? get issuingAuthority => _issuingAuthority;
-
 
   EfDG12.fromBytes(Uint8List data) : super.fromBytes(data);
 

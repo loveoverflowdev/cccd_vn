@@ -1,7 +1,7 @@
 // Created by Nejc Skerjanc, copyright © 2023 ZeroPass. All rights reserved.
 
 import 'dart:typed_data';
-import 'package:dmrtd/extensions.dart';
+import 'package:cccd_vietnam/extensions.dart';
 import 'package:logging/logging.dart';
 
 import './tlv.dart';
@@ -23,8 +23,8 @@ class TLVSet {
   static final _log = Logger("TLVSet");
 
   // Standard Constructor
-  TLVSet({List<TLV>? tlvs}):
-          this._tlvs = tlvs ?? List<TLV>.empty(growable: true);
+  TLVSet({List<TLV>? tlvs})
+      : this._tlvs = tlvs ?? List<TLV>.empty(growable: true);
 
   // Factory Constructor
   factory TLVSet.decode({required Uint8List encodedData}) {
