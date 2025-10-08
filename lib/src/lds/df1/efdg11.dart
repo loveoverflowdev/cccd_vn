@@ -4,10 +4,10 @@
 import 'dart:convert';
 import 'dart:core';
 import 'dart:typed_data';
-import 'package:dmrtd/extensions.dart';
+import 'package:cccd_vietnam/extensions.dart';
 
-import 'package:dmrtd/src/lds/tlv.dart';
-import 'package:dmrtd/src/lds/ef.dart';
+import 'package:cccd_vietnam/src/lds/tlv.dart';
+import 'package:cccd_vietnam/src/lds/ef.dart';
 
 import 'dg.dart';
 

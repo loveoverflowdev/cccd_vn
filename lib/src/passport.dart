@@ -1,8 +1,8 @@
 // Created by Crt Vavros, copyright © 2022 ZeroPass. All rights reserved.
 import 'dart:typed_data';
-import 'package:dmrtd/dmrtd.dart';
-import 'package:dmrtd/extensions.dart';
-import 'package:dmrtd/src/proto/access_key.dart';
+import 'package:cccd_vietnam/dmrtd.dart';
+import 'package:cccd_vietnam/extensions.dart';
+import 'package:cccd_vietnam/src/proto/access_key.dart';
 import 'package:logging/logging.dart';
 
 import 'proto/iso7816/icc.dart';
@@ -45,6 +45,7 @@ class Passport {
   /// if BAC session is not supported.
   Future<void> startSession(final DBAKey keys) async {
     _log.debug("Starting session");
+    _log.debug("keys: ${keys}");
     await _selectDF1();
     await _exec(() => _api.initSessionViaBAC(keys));
     _log.debug("Session established");
@@ -125,6 +126,9 @@ class Passport {
       return EfCardAccess.fromBytes(
         await _exec(() => _api.readFileBySFI(EfCardAccess.SFI)),
       );
+      var a = await _exec(() => _api.readFileBySFI(EfCardAccess.SFI));
+      // print("a: ${a.hex()}");
+      return EfCardAccess.fromBytes(a);
     }
   }
 
@@ -390,8 +394,8 @@ class Passport {
   Future<void> _selectMF() async {
     if (_dfSelected != _DF.MF) {
       _log.debug("Selecting MF");
-      await _exec(() => _api.selectMasterFile());
-      _dfSelected = _DF.MF;
+      // await _exec(() => _api.selectMasterFile());
+      // _dfSelected = _DF.MF;
     }
   }
 

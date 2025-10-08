@@ -4,7 +4,7 @@
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
-import 'package:dmrtd/extensions.dart';
+import 'package:cccd_vietnam/extensions.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 
@@ -46,6 +46,11 @@ class BAC {
     required DBAKey dbaKeys,
     required ICC icc,
   }) async {
+    _log.debug("🆔 MRZ input for BAC:");
+    _log.debug("  Passport number: ${dbaKeys.mrtdNumber}");
+    _log.debug("  Date of birth:   ${dbaKeys.dateOfBirth}");
+    _log.debug("  Expiry date:     ${dbaKeys.dateOfExpiry}");
+
     final Kenc = dbaKeys.encKey;
     final Kmac = dbaKeys.macKey;
 

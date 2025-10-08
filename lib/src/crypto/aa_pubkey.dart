@@ -1,8 +1,8 @@
 // Created by Crt Vavros, copyright © 2022 ZeroPass. All rights reserved.
 import 'dart:typed_data';
 import 'package:collection/collection.dart';
-import 'package:dmrtd/dmrtd.dart';
-import 'package:dmrtd/extensions.dart';
+import 'package:cccd_vietnam/dmrtd.dart';
+import 'package:cccd_vietnam/extensions.dart';
 
 enum AAPublicKeyType {
   // ignore: constant_identifier_names
@@ -50,6 +50,10 @@ class AAPublicKey {
     }
 
     final tvAlgOID = TLV.decode(tvAlg.value);
+    print('tvAlg.tag.value ${tvAlg.tag.value}');
+    print("Raw data hex: ${tvAlgOID.value.hex()}");
+    print("First byte: ${tvAlgOID.value[0].toRadixString(16)}");
+    print("Second byte: ${tvAlgOID.value[1].toRadixString(16)}");
     if (tvAlgOID.tag.value != 0x06) {
       // OID
       throw Exception(
