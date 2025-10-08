@@ -14,7 +14,7 @@ import '../lds/tlv.dart';
 import '../lds/efcard_access.dart';
 import '../utils.dart';
 
-import 'package:cccd_vietnam/extensions.dart';
+import 'package:dmrtd/extensions.dart';
 import 'package:logging/logging.dart';
 
 import 'pace.dart';
@@ -52,8 +52,10 @@ class MrtdApi {
   /// MRTD returns signature of size [sigLength] or of arbitrarily size if [sigLength] is 256.
   /// Can throw [ICCError] if [challenge] is not 8 bytes or [sigLength] is wrong signature length.
   /// Can throw [ComProviderError] in case connection with MRTD is lost.
-  Future<Uint8List> activeAuthenticate(final Uint8List challenge,
-      {int sigLength = 256}) async {
+  Future<Uint8List> activeAuthenticate(
+    final Uint8List challenge, {
+    int sigLength = 256,
+  }) async {
     assert(challenge.length == challengeLen);
     _log.debug("Sending AA command with challenge=${challenge.hex()}");
     return await icc.internalAuthenticate(data: challenge, ne: sigLength);
@@ -76,15 +78,23 @@ class MrtdApi {
   /// Can throw [ICCError] if provided wrong keys.
   /// Can throw [ComProviderError] in case connection with MRTD is lost.
   Future<void> initSessionViaPACE(
-      final AccessKey accessKey, EfCardAccess efCardAccess) async {
+    final AccessKey accessKey,
+    EfCardAccess efCardAccess,
+  ) async {
     _log.debug("Initiating SM session using PACE protocol (only DBA for now)");
     await PACE.initSession(
-        accessKey: accessKey, icc: icc, efCardAccess: efCardAccess);
+      accessKey: accessKey,
+      icc: icc,
+      efCardAccess: efCardAccess,
+    );
     _reinitSession = () async {
       _log.debug("Re-initiating SM session using PACE protocol");
       icc.sm = null;
       await PACE.initSession(
-          accessKey: accessKey, icc: icc, efCardAccess: efCardAccess);
+        accessKey: accessKey,
+        icc: icc,
+        efCardAccess: efCardAccess,
+      );
     };
   }
 
@@ -112,30 +122,39 @@ class MrtdApi {
     // To maximize our chance for MF to be selected we send select first command with P1-P2=’0000′ as
     // specified in doc ISO/IEC 7816-4 section 6.
 
-    await icc
-        .selectFile(cla: ISO7816_CLA.NO_SM, p1: 0, p2: 0)
-        .onError<ICCError>((error, stackTrace) async {
+    await icc.selectFile(cla: ISO7816_CLA.NO_SM, p1: 0, p2: 0).onError<
+      ICCError
+    >((error, stackTrace) async {
       _log.warning(
-          "Couldn't select MF by P1: 0, P2: 0 sw=${error.sw}, re-trying to select MF with FileID=3F00");
+        "Couldn't select MF by P1: 0, P2: 0 sw=${error.sw}, re-trying to select MF with FileID=3F00",
+      );
       return await icc
           .selectFile(
-              cla: ISO7816_CLA.NO_SM,
-              p1: 0,
-              p2: 0,
-              data: Uint8List.fromList([0x3F, 0x00]))
+            cla: ISO7816_CLA.NO_SM,
+            p1: 0,
+            p2: 0,
+            data: Uint8List.fromList([0x3F, 0x00]),
+          )
           .onError<ICCError>((error, stackTrace) async {
-        _log.warning(
-            "Couldn't select MF by P1=0, P2=0, FileID=3F00 sw=${error.sw}, re-trying to select MF with P2=0x0C and FileID=3F00");
-        return await icc
-            .selectFileById(
-                p2: _defaultSelectP2, fileId: Uint8List.fromList([0x3F, 0x00]))
-            .onError<ICCError>((error, stackTrace) async {
-          _log.warning(
-              "Couldn't select MF by P1=0, P2=0x0C, FileID=3F00 sw=${error.sw}, re-trying to select MF with P2=0x0C");
-          return await icc.selectFile(
-              cla: ISO7816_CLA.NO_SM, p1: 0, p2: _defaultSelectP2);
-        });
-      });
+            _log.warning(
+              "Couldn't select MF by P1=0, P2=0, FileID=3F00 sw=${error.sw}, re-trying to select MF with P2=0x0C and FileID=3F00",
+            );
+            return await icc
+                .selectFileById(
+                  p2: _defaultSelectP2,
+                  fileId: Uint8List.fromList([0x3F, 0x00]),
+                )
+                .onError<ICCError>((error, stackTrace) async {
+                  _log.warning(
+                    "Couldn't select MF by P1=0, P2=0x0C, FileID=3F00 sw=${error.sw}, re-trying to select MF with P2=0x0C",
+                  );
+                  return await icc.selectFile(
+                    cla: ISO7816_CLA.NO_SM,
+                    p1: 0,
+                    p2: _defaultSelectP2,
+                  );
+                });
+          });
     });
   }
 
@@ -160,8 +179,10 @@ class MrtdApi {
 
     // Read the rest of the file
     final length = dtl.length.value - (chunk1.data!.length - dtl.encodedLen);
-    final chunk2 =
-        await _readBinary(offset: chunk1.data!.length, length: length);
+    final chunk2 = await _readBinary(
+      offset: chunk1.data!.length,
+      length: length,
+    );
 
     final rawFile = Uint8List.fromList(chunk1.data! + chunk2);
     assert(rawFile.length == dtl.encodedLen + dtl.length.value);
@@ -180,14 +201,19 @@ class MrtdApi {
     }
 
     // Read chunk of file to obtain file length
-    final chunk1 =
-        await icc.readBinaryBySFI(sfi: sfi, offset: 0, ne: _readAheadLength);
+    final chunk1 = await icc.readBinaryBySFI(
+      sfi: sfi,
+      offset: 0,
+      ne: _readAheadLength,
+    );
     final dtl = TLV.decodeTagAndLength(chunk1.data!);
 
     // Read the rest of the file
     final length = dtl.length.value - (chunk1.data!.length - dtl.encodedLen);
-    final chunk2 =
-        await _readBinary(offset: chunk1.data!.length, length: length);
+    final chunk2 = await _readBinary(
+      offset: chunk1.data!.length,
+      length: length,
+    );
 
     final rawFile = Uint8List.fromList(chunk1.data! + chunk2);
     assert(rawFile.length == dtl.encodedLen + dtl.length.value);
@@ -195,8 +221,10 @@ class MrtdApi {
   }
 
   /// Reads [length] long fragment of file starting at [offset].
-  Future<Uint8List> _readBinary(
-      {required int offset, required int length}) async {
+  Future<Uint8List> _readBinary({
+    required int offset,
+    required int length,
+  }) async {
     var data = Uint8List(0);
     while (length > 0) {
       int nRead = length;
@@ -205,7 +233,8 @@ class MrtdApi {
       }
 
       _log.debug(
-          "_readBinary: offset=$offset nRead=$nRead remaining=$length maxRead=$_maxRead");
+        "_readBinary: offset=$offset nRead=$nRead remaining=$length maxRead=$_maxRead",
+      );
       try {
         ResponseAPDU rapdu;
         if (offset > 0x7FFF) {
@@ -224,7 +253,8 @@ class MrtdApi {
           // command GET STATUS, which we don't call here.
           // We log it for tracing purpose.
           _log.debug(
-              "Received ${rapdu.data?.length ?? 0} byte(s), ${rapdu.status.description()}");
+            "Received ${rapdu.data?.length ?? 0} byte(s), ${rapdu.status.description()}",
+          );
         } else if (rapdu.status == StatusWord.unexpectedEOF) {
           _log.warning(rapdu.status.description());
           _reduceMaxRead();
@@ -233,7 +263,8 @@ class MrtdApi {
         } else if (rapdu.status.isError()) {
           // Just making sure if an error has occured we still have valid session
           _log.warning(
-              "An error ${rapdu.status} has occurred while reading file but have received some data. Re-initializing SM session and trying to continue normally.");
+            "An error ${rapdu.status} has occurred while reading file but have received some data. Re-initializing SM session and trying to continue normally.",
+          );
           await _reinitSession?.call();
         }
 
@@ -251,13 +282,15 @@ class MrtdApi {
           _reduceMaxRead();
         } else if (e.sw.sw1 == StatusWord.sw1WrongLengthWithExactLength) {
           _log.warning(
-              "Reducing max read to ${e.sw.sw2} byte(s) due to wrong length error");
+            "Reducing max read to ${e.sw.sw2} byte(s) due to wrong length error",
+          );
           _maxRead = e.sw.sw2;
         } else {
           _maxRead = _defaultReadLength;
           throw MrtdApiError(
-              "An error has occurred while trying to read file chunk.",
-              code: e.sw);
+            "An error has occurred while trying to read file chunk.",
+            code: e.sw,
+          );
         }
         if (e.sw.isError()) {
           // Just a sanity check as ICCError is thrown only on error
@@ -274,9 +307,11 @@ class MrtdApi {
     if (length < 0) {
       final newSize = data.length - length.abs();
       _log.warning(
-          "Total read data size is greater than requested, removing last ${length.abs()} byte(s)");
+        "Total read data size is greater than requested, removing last ${length.abs()} byte(s)",
+      );
       _log.debug(
-          "  Requested size:$newSize byte(s) actual size:${data.length} byte(s)");
+        "  Requested size:$newSize byte(s) actual size:${data.length} byte(s)",
+      );
       data = data.sublist(0, newSize);
     }
 

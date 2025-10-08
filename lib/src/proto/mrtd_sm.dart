@@ -4,7 +4,7 @@
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
-import 'package:cccd_vietnam/extensions.dart';
+import 'package:dmrtd/extensions.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 
@@ -109,14 +109,17 @@ class MrtdSM extends SecureMessaging {
     final tag = dtv.tag.value;
     if (tag != SecureMessaging.tagDO85 && tag != SecureMessaging.tagDO87) {
       throw SMError(
-          "Can't decrypt invalid data DO with tag=$tag value=${dtv.value.hex()}");
+        "Can't decrypt invalid data DO with tag=$tag value=${dtv.value.hex()}",
+      );
     }
 
     final bool isDO87 = tag == SecureMessaging.tagDO87;
     final bool padded =
         !isDO87 || dtv.value[0] == 0x01; // Defined in ISO/IEC 7816-4 part 5
-    var data = cipher.decrypt(dtv.value.sublist(isDO87 ? 1 : 0),
-        ssc: _ssc); // SSC is used only in AES
+    var data = cipher.decrypt(
+      dtv.value.sublist(isDO87 ? 1 : 0),
+      ssc: _ssc,
+    ); // SSC is used only in AES
     _log.sdVerbose("Decrypted data=${data.hex()}");
     _log.sdVerbose("Decrypted data is padded: $padded");
     if (padded) {
@@ -130,8 +133,10 @@ class MrtdSM extends SecureMessaging {
   Uint8List generateDataDO(final CommandAPDU cmd) {
     var dataDO = Uint8List(0);
     if (cmd.data != null && cmd.data!.isNotEmpty) {
-      final edata = cipher.encrypt(ISO9797.pad(cmd.data!, blockLen()),
-          ssc: _ssc); // SSC is used only in AES
+      final edata = cipher.encrypt(
+        ISO9797.pad(cmd.data!, blockLen()),
+        ssc: _ssc,
+      ); // SSC is used only in AES
       if (cmd.ins == ISO7816_INS.READ_BINARY_EXT) {
         dataDO = SecureMessaging.do85(edata);
       } else {
@@ -159,10 +164,11 @@ class MrtdSM extends SecureMessaging {
   }
 
   @visibleForTesting
-  Uint8List generateM(
-      {required final CommandAPDU cmd,
-      required final Uint8List dataDO,
-      required final Uint8List do97}) {
+  Uint8List generateM({
+    required final CommandAPDU cmd,
+    required final Uint8List dataDO,
+    required final Uint8List do97,
+  }) {
     final rawHeader = ISO9797.pad(cmd.rawHeader(), blockLen());
     return Uint8List.fromList(rawHeader + dataDO + do97);
   }

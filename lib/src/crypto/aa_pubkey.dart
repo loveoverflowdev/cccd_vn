@@ -1,14 +1,14 @@
 // Created by Crt Vavros, copyright © 2022 ZeroPass. All rights reserved.
 import 'dart:typed_data';
 import 'package:collection/collection.dart';
-import 'package:cccd_vietnam/dmrtd.dart';
-import 'package:cccd_vietnam/extensions.dart';
+import 'package:dmrtd/dmrtd.dart';
+import 'package:dmrtd/extensions.dart';
 
 enum AAPublicKeyType {
   // ignore: constant_identifier_names
   RSA,
   // ignore: constant_identifier_names
-  ECC
+  ECC,
 }
 
 // Represents Active Authentication Public Key Info
@@ -37,25 +37,24 @@ class AAPublicKey {
     if (tvPubKeyInfo.tag.value != 0x30) {
       // Sequence
       throw Exception(
-          "Invalid SubjectPublicKeyInfo tag=${tvPubKeyInfo.tag.value.hex()}, expected tag=30");
+        "Invalid SubjectPublicKeyInfo tag=${tvPubKeyInfo.tag.value.hex()}, expected tag=30",
+      );
     }
 
     final tvAlg = TLV.decode(tvPubKeyInfo.value);
     if (tvAlg.tag.value != 0x30) {
       // Sequence
       throw Exception(
-          "Invalid AlgorithmIdentifier tag=${tvAlg.tag.value.hex()}, expected tag=30");
+        "Invalid AlgorithmIdentifier tag=${tvAlg.tag.value.hex()}, expected tag=30",
+      );
     }
 
     final tvAlgOID = TLV.decode(tvAlg.value);
-    print('tvAlg.tag.value ${tvAlg.tag.value}');
-    print("Raw data hex: ${tvAlgOID.value.hex()}");
-    print("First byte: ${tvAlgOID.value[0].toRadixString(16)}");
-    print("Second byte: ${tvAlgOID.value[1].toRadixString(16)}");
     if (tvAlgOID.tag.value != 0x06) {
       // OID
       throw Exception(
-          "Invalid Algorithm OID object tag=${tvAlgOID.tag.value.hex()}, expected tag=06");
+        "Invalid Algorithm OID object tag=${tvAlgOID.tag.value.hex()}, expected tag=06",
+      );
     }
 
     final rsaOID = "2A864886F70D010101".parseHex();
@@ -67,7 +66,8 @@ class AAPublicKey {
     if (_subPubKeyBytes[0] != 0x03) {
       // Bit String
       throw Exception(
-          "Invalid SubjectPublicKey object tag=${_subPubKeyBytes[0].hex()}, expected tag=03");
+        "Invalid SubjectPublicKey object tag=${_subPubKeyBytes[0].hex()}, expected tag=03",
+      );
     }
   }
 }

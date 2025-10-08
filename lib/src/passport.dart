@@ -1,8 +1,8 @@
 // Created by Crt Vavros, copyright © 2022 ZeroPass. All rights reserved.
 import 'dart:typed_data';
-import 'package:cccd_vietnam/dmrtd.dart';
-import 'package:cccd_vietnam/extensions.dart';
-import 'package:cccd_vietnam/src/proto/access_key.dart';
+import 'package:dmrtd/dmrtd.dart';
+import 'package:dmrtd/extensions.dart';
+import 'package:dmrtd/src/proto/access_key.dart';
 import 'package:logging/logging.dart';
 
 import 'proto/iso7816/icc.dart';
@@ -23,7 +23,7 @@ enum _DF {
   // ignore: constant_identifier_names
   MF,
   // ignore: constant_identifier_names
-  DF1
+  DF1,
 }
 
 class Passport {
@@ -45,7 +45,6 @@ class Passport {
   /// if BAC session is not supported.
   Future<void> startSession(final DBAKey keys) async {
     _log.debug("Starting session");
-    _log.debug("keys: ${keys}");
     await _selectDF1();
     await _exec(() => _api.initSessionViaBAC(keys));
     _log.debug("Session established");
@@ -58,7 +57,9 @@ class Passport {
   /// Throws [PassportError] when provided [keys] are invalid or
   /// if BAC session is not supported.
   Future<void> startSessionPACE(
-      final AccessKey accessKey, EfCardAccess efCardAccess) async {
+    final AccessKey accessKey,
+    EfCardAccess efCardAccess,
+  ) async {
     _log.debug("Starting session");
     await _exec(() => _api.initSessionViaPACE(accessKey, efCardAccess));
     _log.debug("Session established");
@@ -91,39 +92,39 @@ class Passport {
 
     Uint8List data;
     if (demo) {
-      data = Uint8List.fromList([
-        49,
-        20,
-        48,
-        18,
-        6,
-        10,
-        4,
-        0,
-        127,
-        0,
-        7,
-        2,
-        2,
-        4,
-        2,
-        2,
-        2,
-        1,
-        2,
-        2,
-        1,
-        12
-      ]); //[49, 20, 48, 18, 6, 10, 4, 0, 127, 0, 7, 2, 2, 4, 2, 2, 2, 1, 2, 2, 1, 12]
+      data = Uint8List.fromList(
+        [
+          49,
+          20,
+          48,
+          18,
+          6,
+          10,
+          4,
+          0,
+          127,
+          0,
+          7,
+          2,
+          2,
+          4,
+          2,
+          2,
+          2,
+          1,
+          2,
+          2,
+          1,
+          12,
+        ],
+      ); //[49, 20, 48, 18, 6, 10, 4, 0, 127, 0, 7, 2, 2, 4, 2, 2, 2, 1, 2, 2, 1, 12]
       // same data in hex format: 31 14 30 12 6 a 4 0 7f 0 7 2 2 4 2 2   2 1 2   2 1 c
       return EfCardAccess.fromBytes(data);
     } else {
       await _selectMF();
       return EfCardAccess.fromBytes(
-          await _exec(() => _api.readFileBySFI(EfCardAccess.SFI)));
-      var a = await _exec(() => _api.readFileBySFI(EfCardAccess.SFI));
-      // print("a: ${a.hex()}");
-      return EfCardAccess.fromBytes(a);
+        await _exec(() => _api.readFileBySFI(EfCardAccess.SFI)),
+      );
     }
   }
 
@@ -140,7 +141,8 @@ class Passport {
     _log.debug("Reading EF.CardSecurity");
     await _selectMF();
     return EfCardSecurity.fromBytes(
-        await _exec(() => _api.readFileBySFI(EfCardSecurity.SFI)));
+      await _exec(() => _api.readFileBySFI(EfCardSecurity.SFI)),
+    );
   }
 
   /// Reads file EF.COM from passport.
@@ -388,8 +390,8 @@ class Passport {
   Future<void> _selectMF() async {
     if (_dfSelected != _DF.MF) {
       _log.debug("Selecting MF");
-      // await _exec(() => _api.selectMasterFile());
-      // _dfSelected = _DF.MF;
+      await _exec(() => _api.selectMasterFile());
+      _dfSelected = _DF.MF;
     }
   }
 

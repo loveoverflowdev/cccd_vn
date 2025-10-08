@@ -1,6 +1,6 @@
 // Created by Nejc Skerjanc, copyright © 2023 ZeroPass. All rights reserved.
 
-import "package:cccd_vietnam/src/extension/logging_apis.dart";
+import "package:dmrtd/src/extension/logging_apis.dart";
 import 'package:logging/logging.dart';
 import 'package:pointycastle/asn1/object_identifiers_database.dart';
 import 'package:collection/collection.dart';
@@ -36,83 +36,83 @@ List<Map<String, Object>> customOIDS = [
   {
     'identifierString': '0.4.0.127.0.7.2.2.4.1.1',
     'readableName': 'id-PACE-DH-GM-3DES-CBC-CBC',
-    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 1, 1]
+    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 1, 1],
   },
   {
     'identifierString': '0.4.0.127.0.7.2.2.4.1.2',
     'readableName': 'id-PACE-DH-GM-AES-CBC-CMAC-128',
-    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 1, 2]
+    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 1, 2],
   },
   {
     'identifierString': '0.4.0.127.0.7.2.2.4.1.3',
     'readableName': 'ID_PACE_DH_GM_AES_CBC_CMAC_192',
-    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 1, 3]
+    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 1, 3],
   },
   {
     'identifierString': '0.4.0.127.0.7.2.2.4.1.4',
     'readableName': 'id-PACE-DH-GM-AES-CBC-CMAC-256',
-    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 1, 4]
+    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 1, 4],
   },
   {
     'identifierString': '0.4.0.127.0.7.2.2.4.3.1',
     'readableName': 'id-PACE-DH-IM-3DES-CBC-CBC',
-    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 3, 1]
+    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 3, 1],
   },
   {
     'identifierString': '0.4.0.127.0.7.2.2.4.3.2',
     'readableName': 'id-PACE-DH-IM-AES-CBC-CMAC-128',
-    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 3, 2]
+    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 3, 2],
   },
   {
     'identifierString': '0.4.0.127.0.7.2.2.4.3.3',
     'readableName': 'id-PACE-DH-IM-AES-CBC-CMAC-192',
-    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 3, 3]
+    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 3, 3],
   },
   {
     'identifierString': '0.4.0.127.0.7.2.2.4.3.4',
     'readableName': 'id-PACE-DH-IM-AES-CBC-CMAC-256',
-    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 3, 4]
+    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 3, 4],
   },
   {
     'identifierString': '0.4.0.127.0.7.2.2.4.2.1',
     'readableName': 'id-PACE-ECDH-GM-3DES-CBC-CBC',
-    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 2, 1]
+    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 2, 1],
   },
   {
     'identifierString': '0.4.0.127.0.7.2.2.4.2.2',
     'readableName': 'id-PACE-ECDH-GM-AES-CBC-CMAC-128',
-    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 2, 2]
+    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 2, 2],
   },
   {
     'identifierString': '0.4.0.127.0.7.2.2.4.2.3',
     'readableName': 'id-PACE-ECDH-GM-AES-CBC-CMAC-192',
-    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 2, 3]
+    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 2, 3],
   },
   {
     'identifierString': '0.4.0.127.0.7.2.2.4.2.4',
     'readableName': 'id-PACE-ECDH-GM-AES-CBC-CMAC-256',
-    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 2, 4]
+    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 2, 4],
   },
   {
     'identifierString': '0.4.0.127.0.7.2.2.4.4.1',
     'readableName': 'id-PACE-ECDH-IM-3DES-CBC-CBC',
-    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 4, 1]
+    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 4, 1],
   },
   {
     'identifierString': '0.4.0.127.0.7.2.2.4.4.2',
     'readableName': 'id-PACE-ECDH-IM-AES-CBC-CMAC-128',
-    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 4, 2]
+    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 4, 2],
   },
   {
     'identifierString': '0.4.0.127.0.7.2.2.4.4.3',
     'readableName': 'id-PACE-ECDH-IM-AES-CBC-CMAC-192',
-    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 4, 3]
+    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 4, 3],
   },
   {
     'identifierString': '0.4.0.127.0.7.2.2.4.4.4',
     'readableName': 'id-PACE-ECDH-IM-AES-CBC-CMAC-256',
-    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 4, 4]
-  }
+    'identifier': [0, 4, 0, 127, 0, 7, 2, 2, 4, 4, 4],
+  },
 ];
 
 class OIEexception extends DMRTDException {
@@ -137,19 +137,22 @@ class OIE {
 
   final _log = Logger("OIE");
 
-  OIE(
-      {required this.identifierString,
-      required this.readableName,
-      required this.identifier});
+  OIE({
+    required this.identifierString,
+    required this.readableName,
+    required this.identifier,
+  });
 
   OIE.fromMap({required Map<String, Object> item}) {
     if (!item.containsKey('identifier') ||
         !item.containsKey('identifierString') ||
         !item.containsKey('readableName')) {
       _log.error(
-          'Object identifier must contain identifier, identifierString and readableName.');
+        'Object identifier must contain identifier, identifierString and readableName.',
+      );
       throw OIEexception(
-          'Object identifier must contain identifier, identifierString and readableName.');
+        'Object identifier must contain identifier, identifierString and readableName.',
+      );
     }
 
     if (item['identifier'] is! List<int>) {
@@ -175,9 +178,11 @@ class OIE {
         !item.containsKey('identifierString') ||
         !item.containsKey('readableName')) {
       _log.error(
-          'Object identifier must contain identifier, identifierString and readableName.');
+        'Object identifier must contain identifier, identifierString and readableName.',
+      );
       throw OIEexception(
-          'Object identifier must contain identifier, identifierString and readableName.');
+        'Object identifier must contain identifier, identifierString and readableName.',
+      );
     }
 
     if (item['identifier'] is! List<int>) {
@@ -218,10 +223,7 @@ class OIE {
   }
 }
 
-enum CipherAlgorithm {
-  DESede,
-  AES,
-}
+enum CipherAlgorithm { DESede, AES }
 
 //usage:
 // var x = IV_SIZE.s128;
@@ -235,16 +237,9 @@ enum KEY_LENGTH {
   final num value;
 }
 
-enum TOKEN_AGREEMENT_ALGO {
-  DH,
-  ECDH,
-}
+enum TOKEN_AGREEMENT_ALGO { DH, ECDH }
 
-enum MAPPING_TYPE {
-  GM,
-  IM,
-  CAM,
-}
+enum MAPPING_TYPE { GM, IM, CAM }
 
 class OIEPaceProtocol extends OIE {
   CipherAlgorithm? _cipherAlgorithm;
@@ -252,19 +247,20 @@ class OIEPaceProtocol extends OIE {
   TOKEN_AGREEMENT_ALGO? _tokenAgreementAlgorithm;
   MAPPING_TYPE? _mappingType;
 
-  OIEPaceProtocol(
-      {required String identifierString,
-      required String readableName,
-      required List<int> identifier})
-      : super(
-            identifierString: identifierString.toUpperCase(),
-            readableName: readableName.toUpperCase(),
-            identifier: identifier) {
+  OIEPaceProtocol({
+    required String identifierString,
+    required String readableName,
+    required List<int> identifier,
+  }) : super(
+         identifierString: identifierString.toUpperCase(),
+         readableName: readableName.toUpperCase(),
+         identifier: identifier,
+       ) {
     setParams();
   }
 
   OIEPaceProtocol.fromMap({required Map<String, Object> item})
-      : super.fromMap(item: item) {
+    : super.fromMap(item: item) {
     setParams();
   }
 
@@ -369,31 +365,41 @@ class OIEPaceProtocol extends OIE {
 
       case 'id-PACE-ECDH-CAM-AES-CBC-CMAC-128':
         _log.error(
-            'OIEPaceProtocol; Mapping type CAM  not supported: $identifierString');
+          'OIEPaceProtocol; Mapping type CAM  not supported: $identifierString',
+        );
         throw OIEexception(
-            'OIEPaceProtocol; Mapping type CAM  not supported: $identifierString');
+          'OIEPaceProtocol; Mapping type CAM  not supported: $identifierString',
+        );
       case 'id-PACE-ECDH-CAM-AES-CBC-CMAC-192':
         _log.error(
-            'OIEPaceProtocol; Mapping type CAM  not supported: $identifierString');
+          'OIEPaceProtocol; Mapping type CAM  not supported: $identifierString',
+        );
         throw OIEexception(
-            'OIEPaceProtocol; Mapping type CAM  not supported: $identifierString');
+          'OIEPaceProtocol; Mapping type CAM  not supported: $identifierString',
+        );
       case 'id-PACE-ECDH-CAM-AES-CBC-CMAC-256':
         _log.error(
-            'OIEPaceProtocol; Mapping type CAM  not supported: $identifierString');
+          'OIEPaceProtocol; Mapping type CAM  not supported: $identifierString',
+        );
         throw OIEexception(
-            'OIEPaceProtocol; Mapping type CAM  not supported: $identifierString');
+          'OIEPaceProtocol; Mapping type CAM  not supported: $identifierString',
+        );
       default:
         _log.error(
-            'OIEPaceProtocol; Unknown identifierString: $identifierString');
+          'OIEPaceProtocol; Unknown identifierString: $identifierString',
+        );
         throw OIEexception(
-            'OIEPaceProtocol; Unknown identifierString: $identifierString');
+          'OIEPaceProtocol; Unknown identifierString: $identifierString',
+        );
     }
 
-    _log.sdDebug("OIEPaceProtocol; identifierString: $identifierString, "
-        "CipherAlgorithm: $_cipherAlgorithm, "
-        "KEY_LENGTH: $_keyLength, "
-        "TOKEN_AGREEMENT_ALGO: $_tokenAgreementAlgorithm, "
-        "MAPPING_TYPE: $_mappingType");
+    _log.sdDebug(
+      "OIEPaceProtocol; identifierString: $identifierString, "
+      "CipherAlgorithm: $_cipherAlgorithm, "
+      "KEY_LENGTH: $_keyLength, "
+      "TOKEN_AGREEMENT_ALGO: $_tokenAgreementAlgorithm, "
+      "MAPPING_TYPE: $_mappingType",
+    );
   }
 
   CipherAlgorithm get cipherAlgoritm => _cipherAlgorithm!;
@@ -440,7 +446,8 @@ class ASN1ObjectIdentifierType {
     for (var customOID in customOIDS) {
       if (!checkOID(item: customOID)) {
         throw ASN1ObjectIdentifierObjectException(
-            'Object identifier is not valid.');
+          'Object identifier is not valid.',
+        );
       }
       _OIDS.add(customOID);
     }
@@ -460,7 +467,8 @@ class ASN1ObjectIdentifierType {
         !item.containsKey('identifierString') ||
         !item.containsKey('readableName')) {
       _log.error(
-          'Object identifier must contain identifier, identifierString and readableName.');
+        'Object identifier must contain identifier, identifierString and readableName.',
+      );
       return false;
     }
 
@@ -482,18 +490,22 @@ class ASN1ObjectIdentifierType {
   // has object identifier with identifier string
   bool hasOIDWithIdentifierString({required String identifierString}) {
     _log.finer("hasOIDWithIdentifierString: $identifierString");
-    return _OIDS
-        .any((element) => element['identifierString'] == identifierString);
+    return _OIDS.any(
+      (element) => element['identifierString'] == identifierString,
+    );
   }
 
   // get object identifier by identifier string
-  Map<String, Object> getOIDByIdentifierString(
-      {required String identifierString}) {
+  Map<String, Object> getOIDByIdentifierString({
+    required String identifierString,
+  }) {
     _log.finer("getOIDByIdentifierString: $identifierString");
     return _OIDS.firstWhere(
-        (element) => element['identifierString'] == identifierString,
-        orElse: () => throw ASN1ObjectIdentifierObjectException(
-            'Object identifier with identifier string $identifierString does not exist.'));
+      (element) => element['identifierString'] == identifierString,
+      orElse: () => throw ASN1ObjectIdentifierObjectException(
+        'Object identifier with identifier string $identifierString does not exist.',
+      ),
+    );
   }
 
   // has object identifier wih identifier
@@ -505,8 +517,11 @@ class ASN1ObjectIdentifierType {
   // get object identifier by identifier
   Map<String, Object> getOIDByIdentifier({required List<int> identifier}) {
     _log.finer("getOIDByIdentifier: $identifier");
-    return _OIDS.firstWhere((element) => element['identifier'] == identifier,
-        orElse: () => throw ASN1ObjectIdentifierObjectException(
-            'Object identifier with identifier $identifier does not exist.'));
+    return _OIDS.firstWhere(
+      (element) => element['identifier'] == identifier,
+      orElse: () => throw ASN1ObjectIdentifierObjectException(
+        'Object identifier with identifier $identifier does not exist.',
+      ),
+    );
   }
 }

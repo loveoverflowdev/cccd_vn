@@ -2,7 +2,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'dart:typed_data';
-import 'package:cccd_vietnam/extensions.dart';
+import 'package:dmrtd/extensions.dart';
 import 'dg.dart';
 import '../ef.dart';
 import '../mrz.dart';
@@ -32,7 +32,8 @@ class EfDG1 extends DataGroup {
     final tlv = TLV.fromBytes(content);
     if (tlv.tag != 0x5F1F) {
       throw EfParseError(
-          "Invalid data object tag=${tlv.tag.hex()}, expected object with tag=5F1F");
+        "Invalid data object tag=${tlv.tag.hex()}, expected object with tag=5F1F",
+      );
     }
     _mrz = MRZ(tlv.value);
   }

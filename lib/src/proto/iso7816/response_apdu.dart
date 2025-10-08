@@ -1,6 +1,6 @@
 //  Created by Crt Vavros, copyright © 2022 ZeroPass. All rights reserved.
 import 'dart:typed_data';
-import 'package:cccd_vietnam/extensions.dart';
+import 'package:dmrtd/extensions.dart';
 
 /// Class defines ISO/IEC 7816-4 response APDU
 class ResponseAPDU {
@@ -53,8 +53,10 @@ class StatusWord {
   static const logicalChannelNotSupported = StatusWord(sw1: 0x68, sw2: 0x81);
   static const secureMessagingNotSupported = StatusWord(sw1: 0x68, sw2: 0x82);
   static const commandNotAllowed = StatusWord(sw1: 0x69, sw2: 0x00);
-  static const incompatibleFileStructureCommand =
-      StatusWord(sw1: 0x69, sw2: 0x81);
+  static const incompatibleFileStructureCommand = StatusWord(
+    sw1: 0x69,
+    sw2: 0x81,
+  );
   static const securityStatusNotSatisfied = StatusWord(sw1: 0x69, sw2: 0x82);
   static const authenticationMethodBlocked = StatusWord(sw1: 0x69, sw2: 0x83);
   static const referencedDataInvalidated = StatusWord(sw1: 0x69, sw2: 0x84);
@@ -88,7 +90,9 @@ class StatusWord {
 
   static remainingAvailableResponseBytes(int numBytes) {
     return StatusWord(
-        sw1: sw1SuccessWithRemainingBytes, sw2: numBytes); // Normal execution
+      sw1: sw1SuccessWithRemainingBytes,
+      sw2: numBytes,
+    ); // Normal execution
   }
 
   static leWrongLength(int exactLength) {
@@ -99,8 +103,8 @@ class StatusWord {
   int get value => (sw1 << 8) + sw2;
 
   const StatusWord({required this.sw1, required this.sw2})
-      : assert(sw1 >= 0 && sw1 < 256),
-        assert(sw2 >= 0 && sw2 < 256);
+    : assert(sw1 >= 0 && sw1 < 256),
+      assert(sw2 >= 0 && sw2 < 256);
 
   static StatusWord fromBytes(Uint8List data, [int offset = 0]) {
     if (data.length < 2) {

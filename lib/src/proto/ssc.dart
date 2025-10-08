@@ -1,9 +1,9 @@
 // Created by Crt Vavros, copyright © 2022 ZeroPass. All rights reserved.
 import 'dart:typed_data';
 
-import 'package:cccd_vietnam/extensions.dart';
-import 'package:cccd_vietnam/src/crypto/aes.dart';
-import 'package:cccd_vietnam/src/crypto/des.dart';
+import 'package:dmrtd/extensions.dart';
+import 'package:dmrtd/src/crypto/aes.dart';
+import 'package:dmrtd/src/crypto/des.dart';
 
 /// Class represents Send Sequence Counter as specified in
 /// section 9.8.2 of ICAO 9303 p11 doc.
@@ -19,13 +19,19 @@ class SSC {
   SSC(Uint8List ssc, this.bitSize) {
     if ((bitSize % 8) != 0) {
       throw ArgumentError.value(
-          bitSize, null, "(bitSize) must be multiple of 8");
+        bitSize,
+        null,
+        "(bitSize) must be multiple of 8",
+      );
     }
 
     _ssc = BigInt.parse(ssc.hex(), radix: 16);
     if (_ssc.bitLength > bitSize) {
-      throw ArgumentError.value(ssc, null,
-          "Bit size of provided argument (ssc) is greater than argument (bitSize)");
+      throw ArgumentError.value(
+        ssc,
+        null,
+        "Bit size of provided argument (ssc) is greater than argument (bitSize)",
+      );
     }
   }
 

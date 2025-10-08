@@ -4,7 +4,7 @@
 import 'dart:core';
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:cccd_vietnam/extensions.dart';
+import 'package:dmrtd/extensions.dart';
 
 import 'dg.dart';
 import '../ef.dart';
@@ -58,14 +58,16 @@ class EfDG12 extends DataGroup {
     final tlv = TLV.fromBytes(content);
     if (tlv.tag != tag) {
       throw EfParseError(
-          "Invalid DG12 tag=${tlv.tag.hex()}, expected tag=${TAG.value.hex()}");
+        "Invalid DG12 tag=${tlv.tag.hex()}, expected tag=${TAG.value.hex()}",
+      );
     }
 
     final data = tlv.value;
     final tagListTag = TLV.decode(data);
     if (tagListTag.tag.value != TAG_LIST_TAG) {
       throw EfParseError(
-          "Invalid version object tag=${tagListTag.tag.value.hex()}, expected version object with tag=5c");
+        "Invalid version object tag=${tagListTag.tag.value.hex()}, expected version object with tag=5c",
+      );
     }
     var tagListLength = tlv.value.length;
     int tagListBytesRead = tagListTag.encodedLen;

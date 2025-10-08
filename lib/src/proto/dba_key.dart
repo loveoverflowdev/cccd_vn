@@ -1,7 +1,7 @@
 //  Created by Crt Vavros, copyright © 2022 ZeroPass. All rights reserved.
 import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
-import 'package:cccd_vietnam/extensions.dart';
+import 'package:dmrtd/extensions.dart';
 import 'package:logging/logging.dart';
 
 import '../crypto/kdf.dart';
@@ -31,8 +31,12 @@ class DBAKey extends AccessKey {
 
   /// Constructs [DBAKey] using passport number [mrtdNumber],
   /// passport owner's [dateOfBirth] and passport [dateOfExpiry].
-  DBAKey(String mrtdNumber, DateTime dateOfBirth, DateTime dateOfExpiry,
-      {bool paceMode = false}) {
+  DBAKey(
+    String mrtdNumber,
+    DateTime dateOfBirth,
+    DateTime dateOfExpiry, {
+    bool paceMode = false,
+  }) {
     _mrtdNum = mrtdNumber;
     _dob = dateOfBirth.formatYYMMDD();
     _doe = dateOfExpiry.formatYYMMDD();
@@ -57,9 +61,11 @@ class DBAKey extends AccessKey {
   /// Returns K-pi [kpi] to be used in PACE protocol.
   Uint8List Kpi(CipherAlgorithm cipherAlgorithm, KEY_LENGTH keyLength) {
     _log.debug("Calculating K-pi key ...");
-    _log.sdDebug("Seed: ${keySeed.hex()}, "
-        "Key length: $keyLength, "
-        "Cipher algorithm: $cipherAlgorithm");
+    _log.sdDebug(
+      "Seed: ${keySeed.hex()}, "
+      "Key length: $keyLength, "
+      "Cipher algorithm: $cipherAlgorithm",
+    );
 
     if (cipherAlgorithm == CipherAlgorithm.DESede) {
       return DeriveKey.desEDE(keySeed, paceMode: true);
@@ -74,7 +80,10 @@ class DBAKey extends AccessKey {
       return DeriveKey.aes256(keySeed, paceMode: true);
     } else {
       throw ArgumentError.value(
-          cipherAlgorithm, null, "CanKeys; Unsupported cipher algorithm");
+        cipherAlgorithm,
+        null,
+        "CanKeys; Unsupported cipher algorithm",
+      );
     }
   }
 
@@ -108,7 +117,8 @@ class DBAKey extends AccessKey {
   @override
   String toString() {
     _log.warning(
-        "DBAKeys.toString() called. This is very sensitive data. Do not use in production!");
+      "DBAKeys.toString() called. This is very sensitive data. Do not use in production!",
+    );
     return "DBAKeys{mrtdNumber: $_mrtdNum, dateOfBirth: $_dob, dateOfExpiry: $_doe}. "
         "Is paceMode: ${seedLen == SEED_LEN_PACE}, "
         "Key seed: ${keySeed.hex()}, "

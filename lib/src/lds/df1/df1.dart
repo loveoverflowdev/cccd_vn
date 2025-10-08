@@ -1,5 +1,5 @@
 //  Created by Crt Vavros, copyright © 2022 ZeroPass. All rights reserved.
-import 'package:cccd_vietnam/extensions.dart';
+import 'package:dmrtd/extensions.dart';
 
 // Class contains information eMRTD application applet (DF1)
 class DF1 {

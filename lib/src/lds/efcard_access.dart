@@ -3,9 +3,9 @@
 
 import 'dart:typed_data';
 
-import 'package:cccd_vietnam/extensions.dart';
-import "package:cccd_vietnam/src/lds/df1/dg.dart";
-import "package:cccd_vietnam/src/extension/logging_apis.dart";
+import 'package:dmrtd/extensions.dart';
+import "package:dmrtd/src/lds/df1/dg.dart";
+import "package:dmrtd/src/extension/logging_apis.dart";
 import 'package:logging/logging.dart';
 import 'package:pointycastle/asn1.dart';
 
@@ -39,7 +39,8 @@ class EfCardAccess extends ElementaryFile {
     if (!parser.hasNext()) {
       _log.error("Invalid structure of EF.CardAccess. No data to parse.");
       throw EfParseError(
-          "Invalid structure of EF.CardAccess. No data to parse.");
+        "Invalid structure of EF.CardAccess. No data to parse.",
+      );
     }
 
     ASN1Set set = parser.nextObject() as ASN1Set;
@@ -50,19 +51,23 @@ class EfCardAccess extends ElementaryFile {
 
     if (set.elements == null || set.elements!.length < 1) {
       _log.error(
-          "Invalid structure of EF.CardAccess. More than one element in set.");
+        "Invalid structure of EF.CardAccess. More than one element in set.",
+      );
       throw EfParseError(
-          "Invalid structure of EF.CardAccess. More than one element in set.");
+        "Invalid structure of EF.CardAccess. More than one element in set.",
+      );
     }
 
     if (set.elements![0] is! ASN1Sequence) {
       _log.error(
-          "Invalid structure of EF.CardAccess. First element in set is not ASN1Sequence.");
+        "Invalid structure of EF.CardAccess. First element in set is not ASN1Sequence.",
+      );
       throw EfParseError(
-          "Invalid structure of EF.CardAccess. First element in set is not ASN1Sequence.");
+        "Invalid structure of EF.CardAccess. First element in set is not ASN1Sequence.",
+      );
     }
 
-    PaceInfo pi = PaceInfo(content: set.elements![2] as ASN1Sequence);
+    PaceInfo pi = PaceInfo(content: set.elements![0] as ASN1Sequence);
     _log.info("PaceInfo parsed.");
 
     _log.sdDebug("PaceInfo: $pi");
@@ -70,7 +75,8 @@ class EfCardAccess extends ElementaryFile {
     paceInfo = pi;
 
     _log.severe(
-        "PaceInfo substruct has been saved to efcardaccess member ( paceInfo )");
+      "PaceInfo substruct has been saved to efcardaccess member ( paceInfo )",
+    );
 
     //TODO: parse PACEDomainParameterInfo(9303 p11, 9.2.1)
     /*

@@ -1,7 +1,7 @@
 //  Created by Nejc Skerjanc, copyright © 2023 ZeroPass. All rights reserved.
 
 import 'dart:typed_data';
-import 'package:cccd_vietnam/extensions.dart';
+import 'package:dmrtd/extensions.dart';
 import 'package:logging/logging.dart';
 import 'package:pointycastle/export.dart';
 
@@ -49,27 +49,33 @@ class AESCipher {
   //  The key must be exactly 128-bits, 192-bits or 256-bits (i.e. 16, 24 or 32 bytes);
   //  This is what determines whether AES-128, AES-192 or AES-256 is being performed.
 
-  Uint8List encrypt(
-      {required Uint8List data,
-      required Uint8List key,
-      Uint8List? iv,
-      BLOCK_CIPHER_MODE mode = BLOCK_CIPHER_MODE.CBC,
-      bool padding = false}) {
+  Uint8List encrypt({
+    required Uint8List data,
+    required Uint8List key,
+    Uint8List? iv,
+    BLOCK_CIPHER_MODE mode = BLOCK_CIPHER_MODE.CBC,
+    bool padding = false,
+  }) {
     _log.finest(
-        "AESCipher.encrypt; data size: ${data.length}, data: ${data.hex()}");
+      "AESCipher.encrypt; data size: ${data.length}, data: ${data.hex()}",
+    );
     _log.sdVerbose(
-        "AESCipher.encrypt; data:${data.hex()}, key size: ${key.length}, key: ${key.hex()}");
+      "AESCipher.encrypt; data:${data.hex()}, key size: ${key.length}, key: ${key.hex()}",
+    );
 
     if (key.length != size) {
       _log.error(
-          "AESCipher.encrypt; AES${size * 8} key length must be ${size * 8} bits.");
+        "AESCipher.encrypt; AES${size * 8} key length must be ${size * 8} bits.",
+      );
       throw AESCipherError(
-          "AESCipher.encrypt; AES${size * 8} key length must be ${size * 8} bits.");
+        "AESCipher.encrypt; AES${size * 8} key length must be ${size * 8} bits.",
+      );
     }
 
     if (iv != null) {
       _log.sdVerbose(
-          "AESCipher.encrypt; iv size: ${iv.length}, iv: ${iv.hex()}");
+        "AESCipher.encrypt; iv size: ${iv.length}, iv: ${iv.hex()}",
+      );
       if (iv.length != AES_BLOCK_SIZE) {
         _log.error("AESCipher.encrypt; iv length is not 128 bits.");
         throw AESCipherError("AESCipher.encrypt; iv length is not 128 bits.");
@@ -81,8 +87,10 @@ class AESCipher {
     final paddedData;
     if (padding) {
       _log.finest("Padding data with zeros to block size: $AES_BLOCK_SIZE");
-      paddedData =
-          pad(data: data, blockSize: AES_BLOCK_SIZE); //AES has no padding
+      paddedData = pad(
+        data: data,
+        blockSize: AES_BLOCK_SIZE,
+      ); //AES has no padding
     } else {
       _log.finest("Data will not be padded.");
       paddedData = data;
@@ -99,26 +107,32 @@ class AESCipher {
     return _processBlocks(cipher: cipher, data: paddedData);
   }
 
-  Uint8List decrypt(
-      {required Uint8List data,
-      required Uint8List key,
-      Uint8List? iv,
-      BLOCK_CIPHER_MODE mode = BLOCK_CIPHER_MODE.CBC}) {
+  Uint8List decrypt({
+    required Uint8List data,
+    required Uint8List key,
+    Uint8List? iv,
+    BLOCK_CIPHER_MODE mode = BLOCK_CIPHER_MODE.CBC,
+  }) {
     _log.finest(
-        "AESCipher.decrypt; data size: ${data.length}, data: ${data.hex()}");
+      "AESCipher.decrypt; data size: ${data.length}, data: ${data.hex()}",
+    );
     _log.sdVerbose(
-        "AESCipher.decrypt; data: ${data.hex()}, key size: ${key.length}, key: ${key.hex()}");
+      "AESCipher.decrypt; data: ${data.hex()}, key size: ${key.length}, key: ${key.hex()}",
+    );
 
     if (key.length != size) {
       _log.error(
-          "AESCipher.decrypt; AES${size * 8} key length must be ${size * 8} bits.");
+        "AESCipher.decrypt; AES${size * 8} key length must be ${size * 8} bits.",
+      );
       throw AESCipherError(
-          "AESCipher.decrypt; AES${size * 8} key length must be ${size * 8} bits.");
+        "AESCipher.decrypt; AES${size * 8} key length must be ${size * 8} bits.",
+      );
     }
 
     if (iv != null) {
       _log.sdVerbose(
-          "AESCipher.decrypt; iv size: ${iv.length}, iv: ${iv.hex()}");
+        "AESCipher.decrypt; iv size: ${iv.length}, iv: ${iv.hex()}",
+      );
       if (iv.length != AES_BLOCK_SIZE) {
         _log.error("AESCipher.encrypt; iv length is not 128 bits.");
         throw AESCipherError("AESCipher.encrypt; iv length is not 128 bits.");
@@ -135,11 +149,14 @@ class AESCipher {
     else
       cipher = ECBBlockCipher(_factory())..init(false, KeyParameter(key));
     return Uint8List.fromList(
-        _processBlocks(cipher: cipher, data: data).toList());
+      _processBlocks(cipher: cipher, data: data).toList(),
+    );
   }
 
-  Uint8List _processBlocks(
-      {required BlockCipher cipher, required Uint8List data}) {
+  Uint8List _processBlocks({
+    required BlockCipher cipher,
+    required Uint8List data,
+  }) {
     _log.finest("AESCipher._processBlocks; data size: ${data.length}");
     _log.sdVerbose("AESCipher._processBlocks; data: ${data.hex()}");
     final output = Uint8List(data.length);

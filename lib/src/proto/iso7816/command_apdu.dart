@@ -1,6 +1,6 @@
 // Created by Crt Vavros, copyright © 2022 ZeroPass. All rights reserved.
 import 'dart:typed_data';
-import 'package:cccd_vietnam/extensions.dart';
+import 'package:dmrtd/extensions.dart';
 
 // Class defines ISO/IEC 7816-4 command APDU
 class CommandAPDU {
@@ -20,13 +20,14 @@ class CommandAPDU {
   /// Max [ne] is 65536.
   /// If [ne] is set to 0, [ne] won't be serialized and send with the command.
   /// If [ne] is set to 256 or 65536 [ne] will be encoded as 0x00, which means arbitrary long data is expected in the response.
-  CommandAPDU(
-      {required int cla,
-      required int ins,
-      required int p1,
-      required int p2,
-      final Uint8List? data,
-      int ne = 0}) {
+  CommandAPDU({
+    required int cla,
+    required int ins,
+    required int p1,
+    required int p2,
+    final Uint8List? data,
+    int ne = 0,
+  }) {
     this.cla = cla;
     this.ins = ins;
     this.p1 = p1;
@@ -41,7 +42,10 @@ class CommandAPDU {
       _cla = cla;
     } else {
       throw ArgumentError.value(
-          cla, "cla", "Command APDU invalid parameter value");
+        cla,
+        "cla",
+        "Command APDU invalid parameter value",
+      );
     }
   }
 
@@ -51,7 +55,10 @@ class CommandAPDU {
       _ins = ins;
     } else {
       throw ArgumentError.value(
-          ins, "ins", "Command APDU invalid parameter value");
+        ins,
+        "ins",
+        "Command APDU invalid parameter value",
+      );
     }
   }
 
@@ -61,7 +68,10 @@ class CommandAPDU {
       _p1 = p1;
     } else {
       throw ArgumentError.value(
-          p1, "p1", "Command APDU invalid parameter value");
+        p1,
+        "p1",
+        "Command APDU invalid parameter value",
+      );
     }
   }
 
@@ -71,7 +81,10 @@ class CommandAPDU {
       _p2 = p2;
     } else {
       throw ArgumentError.value(
-          p2, "p2", "Command APDU invalid parameter value");
+        p2,
+        "p2",
+        "Command APDU invalid parameter value",
+      );
     }
   }
 
@@ -79,7 +92,10 @@ class CommandAPDU {
   set data(Uint8List? data) {
     if (data != null && data.length > 0xffff) {
       throw ArgumentError.value(
-          data, "data", "Command APDU invalid parameter value");
+        data,
+        "data",
+        "Command APDU invalid parameter value",
+      );
     }
     _data = data;
   }
@@ -90,7 +106,10 @@ class CommandAPDU {
       _ne = ne;
     } else {
       throw ArgumentError.value(
-          ne, "ne", "Command APDU invalid parameter value");
+        ne,
+        "ne",
+        "Command APDU invalid parameter value",
+      );
     }
   }
 
@@ -125,11 +144,16 @@ class CommandAPDU {
     if (!extended) {
       // case 2s or 4s
       lev.setUint8(
-          0, ne == 256 ? 0 : ne); // 256 is encoded as 0x00 e.g. variable long
+        0,
+        ne == 256 ? 0 : ne,
+      ); // 256 is encoded as 0x00 e.g. variable long
     } else {
       // extended, case 2e or 4e
-      lev.setUint16(addByte, (ne == 256 || ne == 65536) ? 0 : ne,
-          Endian.big); // 256 and 65536 are encoded as 0x00 0x00
+      lev.setUint16(
+        addByte,
+        (ne == 256 || ne == 65536) ? 0 : ne,
+        Endian.big,
+      ); // 256 and 65536 are encoded as 0x00 0x00
     }
     return le;
   }

@@ -1,9 +1,9 @@
 //  Created by Nejc Skerjanc, copyright © 2023 ZeroPass. All rights reserved.
 
 import 'dart:typed_data';
-import 'package:cccd_vietnam/src/lds/asn1ObjectIdentifiers.dart';
+import 'package:dmrtd/src/lds/asn1ObjectIdentifiers.dart';
 import 'package:logging/logging.dart';
-import 'package:cccd_vietnam/extensions.dart';
+import 'package:dmrtd/extensions.dart';
 
 import '../crypto/kdf.dart';
 import 'access_key.dart';
@@ -32,7 +32,8 @@ class CanKey extends AccessKey {
     final RegExp regex = RegExp(r'^\d{6}$');
     if (!regex.hasMatch(canNumber)) {
       throw CanKeysError(
-          "AccessKey.CanKeys; Code must be exactly 6 digits and only contain numbers");
+        "AccessKey.CanKeys; Code must be exactly 6 digits and only contain numbers",
+      );
     }
 
     Uint8List canNumberInList = Uint8List(6);
@@ -59,7 +60,10 @@ class CanKey extends AccessKey {
       return DeriveKey.aes256(_can, paceMode: true);
     } else {
       throw ArgumentError.value(
-          cipherAlgorithm, null, "CanKeys; Unsupported cipher algorithm");
+        cipherAlgorithm,
+        null,
+        "CanKeys; Unsupported cipher algorithm",
+      );
     }
   }
 
@@ -69,7 +73,8 @@ class CanKey extends AccessKey {
   @override
   String toString() {
     _log.warning(
-        "CanKeys.toString() called. This is very sensitive data. Do not use in production!");
+      "CanKeys.toString() called. This is very sensitive data. Do not use in production!",
+    );
     return "CanKeys; CAN: ${_can.hex()}";
     return super.toString();
   }
